@@ -48,7 +48,7 @@ public class UsuarioAdministrador extends Usuario implements InterfazGestionarNo
         // Definir el formateador para las fechas
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-        System.out.println("\nNotas del administrador:");
+        System.out.println("\nListado de notas:");
         for (Categoria categoria : categorias) {
             for (Nota nota : categoria.getNotas()) {
                 System.out.println("Título: " + nota.getTitulo());
@@ -74,7 +74,7 @@ public class UsuarioAdministrador extends Usuario implements InterfazGestionarNo
 
         System.out.println("Ingrese la categoría de la nota:");
         String nombreCategoria = scanner.nextLine();
-        
+
         // Obtener la fecha y hora actual
         LocalDateTime fechaActual = LocalDateTime.now();
 
@@ -88,7 +88,37 @@ public class UsuarioAdministrador extends Usuario implements InterfazGestionarNo
     }
 
     @Override
-    public void eliminarNota(Nota nota) {
+    public void eliminarNota() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Ingrese el título de la nota que desea eliminar:");
+        String titulo = scanner.nextLine();
+
+        System.out.println("Ingrese la categoría de la nota:");
+        String nombreCategoria = scanner.nextLine();
+
+        // Buscar la nota en el gestor para eliminarla
+        Nota notaAEliminar = null;
+        for (Categoria categoria : gestor.getCategorias()) {
+            if (categoria.getNombre().equals(nombreCategoria)) {
+                for (Nota n : categoria.getNotas()) {
+                    if (n.getTitulo().equals(titulo) && n.getUsuario().equals(this)) {
+                        notaAEliminar = n;
+                        break;
+                    }
+                }
+            }
+            if (notaAEliminar != null) {
+                break;
+            }
+        }
+
+        if (notaAEliminar != null) {
+            gestor.eliminarNota(nombreCategoria, notaAEliminar);
+            System.out.println("Nota eliminada con éxito.");
+        } else {
+            System.out.println("Nota no encontrada.");
+        }
     }
 
 }

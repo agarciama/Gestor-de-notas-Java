@@ -12,5 +12,5 @@ public interface InterfazGestionarNota {
     void visualizarNotas();
     void agregarNota();
     void editarNota(Nota nota);
-    void eliminarNota(Nota nota);
+    void eliminarNota();
 }

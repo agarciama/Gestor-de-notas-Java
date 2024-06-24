@@ -94,7 +94,7 @@ public class UsuarioNormal extends Usuario implements InterfazGestionarNota {
     }
 
     @Override
-    public void eliminarNota(Nota nota) {
+    public void eliminarNota() {
     }
 
 }

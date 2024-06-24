@@ -36,7 +36,7 @@ public class Main {
         while (continuar) {
             System.out.println("1 - Registrarse");
             System.out.println("2 - Iniciar sesión");
-            System.out.println("3 - Salir\n");
+            System.out.println("3 - Salir");
             int opcion = scanner.nextInt();
             scanner.nextLine();
 
@@ -45,22 +45,21 @@ public class Main {
                     registrarUsuario(scanner);
                     break;
                 case 2:
+                    //Llamamos a la funcion de iniciar sesion y esta nos devuelve si se ha registrador un usuario normal o el administrador
                     String user = iniciarSesion(scanner);
+                    //Si devuelve null el inicio de sesión no es correcto y se vuelve a ejecutar el bucle
                     if (user != null) {
+                        //comprobamos si el usaurio logueado es un admin 
                         if (user.equals("admin")) {
-                            // Menú para el administrador
+ 
                             boolean continuarAdmin = true;
                             while (continuarAdmin) {
-
+                                //Función para mostrar las opciones de menú del administrador
                                 admin.mostrarMenu();
-
-                                System.out.println("1 - Agregar nota");
-                                System.out.println("2 - Editar nota");
-                                System.out.println("3 - Eliminar nota");
-                                System.out.println("4 - Visualizar notas");
-                                System.out.println("5 - Cerrar sesión");
+                                
+                                //Recogemos la opción introducida
                                 int adminOpcion = scanner.nextInt();
-                                scanner.nextLine(); // Consumir la nueva línea
+                                scanner.nextLine();
 
                                 switch (adminOpcion) {
                                     case 1:
@@ -74,8 +73,7 @@ public class Main {
                                         System.out.println("Función editar nota no implementada.");
                                         break;
                                     case 4:
-                                        // Lógica para eliminar nota
-                                        System.out.println("Función eliminar nota no implementada.");
+                                        admin.eliminarNota();
                                         break;
                                     case 5:
                                         continuarAdmin = false;
@@ -84,15 +82,17 @@ public class Main {
                                         System.out.println("Opción no válida.");
                                 }
                             }
+                        //en caso contrario siempre va a ser un usuario normal    
                         } else {
-                            // Menú para el usuario normal
+                            // llamamos a la función que nos busca por el nombre del usuario logueado y esta nos devuelve un objeto de tipo usuarioNormal que será el usuario logueado 
                             UsuarioNormal usuarioLogueado = buscarUsuarioPorNombre(user);
+                            // comprobamos que el usuario este bien logueado y que no devuelva null
                             if (usuarioLogueado != null) {
                                 boolean continuarUsuario = true;
                                 while (continuarUsuario) {
                                     usuarioLogueado.mostrarMenu();
                                     int userOpcion = scanner.nextInt();
-                                    scanner.nextLine(); // Consumir la nueva línea
+                                    scanner.nextLine();
 
                                     switch (userOpcion) {
                                         case 1:
@@ -135,7 +135,7 @@ public class Main {
 
     //Funciones para gestionar los usuarios
     private static void registrarUsuario(Scanner scanner) {
-        System.out.println("Ingrese su nombre de usuario:");
+        System.out.println("\nIngrese su nombre de usuario:");
         String nombre = scanner.nextLine();
 
         System.out.println("Ingrese su contraseña:");
@@ -143,29 +143,29 @@ public class Main {
 
         UsuarioNormal nuevoUsuario = new UsuarioNormal(nombre, password, gestor);
         if (usuarios.add(nuevoUsuario)) {
-            System.out.println("Usuario registrado con éxito.");
+            System.out.println("Usuario registrado con éxito.\n");
         } else {
-            System.out.println("El nombre de usuario ya existe. Intente con otro nombre.");
+            System.out.println("El nombre de usuario ya existe. Intente con otro nombre.\n");
         }
     }
 
     private static String iniciarSesion(Scanner scanner) {
-        System.out.println("Ingrese su nombre de usuario:");
+        System.out.println("\nIngrese su nombre de usuario:");
         String nombre = scanner.nextLine();
 
         System.out.println("Ingrese su contraseña:");
         String password = scanner.nextLine();
 
         if (admin.getNombre().equals(nombre) && admin.validarPassword(password)) {
-            System.out.println("Inicio de sesión como Administrador exitoso.");
+            System.out.println("Inicio de sesión como Administrador exitoso.\n");
             return "admin";
         } else {
             UsuarioNormal usuario = buscarUsuario(nombre, password);
             if (usuario != null) {
-                System.out.println("Inicio de sesión como Usuario exitoso.");
+                System.out.println("Inicio de sesión como Usuario exitoso.\n");
                 return usuario.getNombre();
             } else {
-                System.out.println("Nombre de usuario o contraseña incorrectos.");
+                System.out.println("Nombre de usuario o contraseña incorrectos.\n");
                 return null;
             }
         }

@@ -4,6 +4,7 @@
  */
 package es.upsa.gestornotasapp;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,17 +34,33 @@ public class Gestor {
     }
     
     public void agregarNota(String nombreCategoria, Nota nota) {
-        for (Categoria categoria : categorias) {
-            if (categoria.getNombre().equals(nombreCategoria)) {
-                categoria.agregarNota(nota);
-                return;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    for (Categoria categoria : categorias) {
+        if (categoria.getNombre().equals(nombreCategoria)) {
+            for (Nota n : categoria.getNotas()) {
+                if (n.getTitulo().equals(nota.getTitulo())) {
+                    System.out.println("Esta nota ya ha sido introducida en esta categoría");
+                    System.out.println("Título: " + n.getTitulo());
+                    System.out.println("Categoría: " + categoria.getNombre());
+                    System.out.println("Contenido: " + n.getContenido());
+                    System.out.println("Fecha creación: " + n.getFechaCreacion().format(formatter));
+                    System.out.println("Fecha modificación: " + n.getFechaUltimaModificacion().format(formatter));
+                    System.out.println("Usuario: " + n.getUsuario().getNombre());
+                    System.out.println();
+                    return;
+                }
             }
+            categoria.agregarNota(nota);
+            return;
         }
-        // Si no existe la categoría, crearla y agregar la nota
-        Categoria nuevaCategoria = new Categoria(nombreCategoria);
-        nuevaCategoria.agregarNota(nota);
-        categorias.add(nuevaCategoria);
     }
+    // Si no existe la categoría, crearla y agregar la nota
+    Categoria nuevaCategoria = new Categoria(nombreCategoria);
+    nuevaCategoria.agregarNota(nota);
+    categorias.add(nuevaCategoria);
+}
+
     
     public void eliminarNota(String nombreCategoria, Nota nota) {
         for (Categoria categoria : categorias) {
