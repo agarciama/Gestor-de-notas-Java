@@ -5,6 +5,7 @@
 package es.upsa.gestornotasapp;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,13 +26,13 @@ public class UsuarioNormal extends Usuario implements InterfazGestionarNota {
     //Metodo extendido de la clase abstracta Usuario
     @Override
     public void mostrarMenu() {
-        System.out.println("Bienvenido" + nombre);
-        System.out.println("Opciones de usuario");
+        System.out.println("\nBienvenido " + nombre);
+        System.out.println("Opciones de usuario:");
         System.out.println("1 - Ver mis notas");
-        System.out.println("2 -  Agregar Nota");
+        System.out.println("2 - Agregar Nota");
         System.out.println("3 - Editar Nota");
         System.out.println("4 - Eliminar Nota");
-        System.out.println("5 - Salir");
+        System.out.println("5 - Salir\n");
     }
     
     
@@ -40,17 +41,26 @@ public class UsuarioNormal extends Usuario implements InterfazGestionarNota {
     public void visualizarNotas() {
         List<Categoria> categorias = gestor.getCategorias();
         
+        //Comprobamos si la todavía no se ha introducido ninguna nota
+        if (categorias.isEmpty()){
+            System.out.println("\nTodavía no se ha agregado ninguna nota\n");
+        }
+        
+        // Definir el formateador para las fechas
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        
+        System.out.println("\nNotas de " + nombre);
         for (Categoria categoria : categorias) {
             
             for (Nota nota : categoria.getNotas()) {
                 
                 //Comprobamos que el usuario de la nota es igual a el usuario logueado para mostrar solo sus notas
                 if (nota.getUsuario().equals(this)) {
-                    System.out.println(nota.getTitulo());
-                    System.out.println(categoria.getNombre());
-                    System.out.println(nota.getContenido());
-                    System.out.println(nota.getFechaCreacion());
-                    System.out.println(nota.getFechaUltimaModificacion());
+                    System.out.println("Título: "+nota.getTitulo());
+                    System.out.println("Categoría: "+categoria.getNombre());
+                    System.out.println("Contenido: "+nota.getContenido());
+                    System.out.println("Fecha creación: " + nota.getFechaCreacion().format(formatter));
+                    System.out.println("Fecha modificación: " + nota.getFechaUltimaModificacion().format(formatter));
                     System.out.println();
                 }
             }
@@ -71,7 +81,11 @@ public class UsuarioNormal extends Usuario implements InterfazGestionarNota {
         System.out.println("Ingrese la categoría de la nota:");
         String nombreCategoria = scanner.nextLine();
         
-        Nota nuevaNota = new Nota(titulo, contenido, LocalDateTime.MIN, LocalDateTime.MIN, this);
+                // Obtener la fecha y hora actual
+        LocalDateTime fechaActual = LocalDateTime.now();
+
+        Nota nuevaNota = new Nota(titulo, contenido, fechaActual, fechaActual, this);
+
         gestor.agregarNota(nombreCategoria, nuevaNota);
     }
 
