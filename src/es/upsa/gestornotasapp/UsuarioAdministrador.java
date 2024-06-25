@@ -83,8 +83,53 @@ public class UsuarioAdministrador extends Usuario implements InterfazGestionarNo
     }
 
     @Override
-    public void editarNota(Nota nota) {
+    public void editarNota() {
+        Scanner scanner = new Scanner(System.in);
 
+        //pedimos al usuario los datos de la nota a editar
+        System.out.println("\nIngrese el título de la nota que desea editar:");
+        String titulo = scanner.nextLine();
+
+        System.out.println("Ingrese la categoría de la nota:");
+        String nombreCategoria = scanner.nextLine();
+
+        // buscamos la nota en el gestor para editarla
+        Nota notaAEditar = null;
+        //recorremos las categorias
+        for (Categoria categoria : gestor.getCategorias()) {
+            //hasta encontrar la categoria que ha introducido el admin
+            if (categoria.getNombre().equals(nombreCategoria)) {
+                //recorremos las notas de esa categoría
+                for (Nota nota : categoria.getNotas()) {
+                    //buscamos la nota por el titulo, no hace falta comprobar el usuario porque el administrador pueder editar cualquier nota
+                    if (nota.getTitulo().equals(titulo)) {
+                        notaAEditar = nota;
+                        break;
+                    }
+                }
+            }
+            //si no encontramos la nota salimos del bucle
+            if (notaAEditar != null) {
+                break;
+            }
+        }
+
+        //si encontramos la nota le pedimos los datos que quiere editar
+        if (notaAEditar != null) {
+            System.out.println("\nIngrese el nuevo título de la nota (deje en blanco para no cambiar):");
+            String nuevoTitulo = scanner.nextLine();
+
+            System.out.println("Ingrese el nuevo contenido de la nota (deje en blanco para no cambiar):");
+            String nuevoContenido = scanner.nextLine();
+
+            System.out.println("Ingrese la nueva categoría de la nota (deje en blanco para no cambiar):");
+            String nuevaCategoria = scanner.nextLine();
+
+            gestor.editarNota(nombreCategoria, notaAEditar, nuevoTitulo, nuevoContenido, nuevaCategoria);
+            System.out.println("\nNota editada con éxito.");
+        } else { //si no hemos encontrado la nota entrará en este else y notificaremos que la nota no ha sido encontrada
+            System.out.println("\nNota no encontrada.");
+        }
     }
 
     @Override
@@ -102,7 +147,8 @@ public class UsuarioAdministrador extends Usuario implements InterfazGestionarNo
         for (Categoria categoria : gestor.getCategorias()) {
             if (categoria.getNombre().equals(nombreCategoria)) {
                 for (Nota n : categoria.getNotas()) {
-                    if (n.getTitulo().equals(titulo) && n.getUsuario().equals(this)) {
+                    //no hace falta comprobar que el usuario porque el administrador pueder eliminar cualquier nota
+                    if (n.getTitulo().equals(titulo)) {
                         notaAEliminar = n;
                         break;
                     }

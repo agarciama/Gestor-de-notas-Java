@@ -66,8 +66,4 @@ public class Nota {
         this.usuario = usuario;
     }
     
-    public void editarContenido(String nuevoContenido) {
-        this.contenido = nuevoContenido;
-        this.fechaUltimaModificacion = LocalDateTime.now();
-    }
 }

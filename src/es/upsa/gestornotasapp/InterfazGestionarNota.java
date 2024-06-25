@@ -11,6 +11,6 @@ package es.upsa.gestornotasapp;
 public interface InterfazGestionarNota {
     void visualizarNotas();
     void agregarNota();
-    void editarNota(Nota nota);
+    void editarNota();
     void eliminarNota();
 }

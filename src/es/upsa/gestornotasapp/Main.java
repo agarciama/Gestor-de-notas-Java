@@ -69,8 +69,7 @@ public class Main {
                                         admin.agregarNota();
                                         break;
                                     case 3:
-                                        // Lógica para editar nota
-                                        System.out.println("Función editar nota no implementada.");
+                                        admin.editarNota();
                                         break;
                                     case 4:
                                         admin.eliminarNota();
@@ -102,12 +101,10 @@ public class Main {
                                             usuarioLogueado.agregarNota();
                                             break;
                                         case 3:
-                                            // Lógica para editar nota
-                                            System.out.println("Función editar nota no implementada.");
+                                            usuarioLogueado.editarNota();
                                             break;
                                         case 4:
-                                            // Lógica para eliminar nota
-                                            System.out.println("Función eliminar nota no implementada.");
+                                            usuarioLogueado.eliminarNota();
                                             break;
                                         case 5:
                                             continuarUsuario = false;
