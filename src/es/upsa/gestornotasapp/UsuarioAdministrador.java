@@ -48,6 +48,7 @@ public class UsuarioAdministrador extends Usuario implements InterfazGestionarNo
         // Definir el formateador para las fechas
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+
         System.out.println("\nListado de notas:");
         for (Categoria categoria : categorias) {
             for (Nota nota : categoria.getNotas()) {
